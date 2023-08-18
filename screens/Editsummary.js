@@ -1,40 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRoute } from '@react-navigation/native';
 
-const Editsummary = ({ route, navigation }) => {
-  const { selectedItem } = route.params;
+const EditSummary = ({ navigation }) => {
+  const route = useRoute();
+  const { selectedItem } = route.params; // Make sure this prop is passed in navigation
 
-  const [category, setCategory] = useState(selectedItem.category);
-  const [amount, setAmount] = useState(selectedItem.amount.toString());
-  const [note, setNote] = useState(selectedItem.note);
-  const [type, setType] = useState(selectedItem.type);
+  const [category, setCategory] = useState('');
+  const [amount, setAmount] = useState('');
+  const [note, setNote] = useState('');
+  const [type, setType] = useState('');
 
-  const handleEdit = async () => {
-    try {
-      const existingSummary = await AsyncStorage.getItem('summary');
-      if (existingSummary) {
-        const summary = JSON.parse(existingSummary);
-        const updatedSummary = summary.map(item => {
-          if (item.id === selectedItem.id) {
-            return {
-              ...item,
-              category: category,
-              amount: parseFloat(amount),
-              note: note,
-              type: type,
-            };
-          }
-          return item;
-        });
-        await AsyncStorage.setItem('summary', JSON.stringify(updatedSummary));
-        navigation.goBack(); // หลังจากแก้ไขเสร็จให้กลับไปยังหน้า Summary
-      }
-    } catch (error) {
-      console.error('Error editing summary:', error);
-    }
-  };
+  useEffect(() => {
+    setCategory(selectedItem.category);
+    setAmount(selectedItem.amount.toString());
+    setNote(selectedItem.note);
+    setType(selectedItem.type);
+  }, [selectedItem]);
+
+  const handleEdit = (item) => {
   
+  setSelected
+setSelectedItem(item);
+  navigation.
+ 
+navigate('EditSummary', { selectedItem: item }); // Pass the selectedItem prop
+};
 
   
   return (
@@ -104,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Editsummary;
+export default EditSummary;

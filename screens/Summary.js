@@ -10,10 +10,8 @@ const Summary = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
-
   useEffect(() => {
     fetchSummary();
-   
   }, []);
 
   const fetchSummary = async () => {
@@ -29,8 +27,7 @@ const Summary = () => {
 
   const handleEdit = (item) => {
     setSelectedItem(item);
-    
-    navigation.navigate('Editsummary');
+    toggleModal();
   };
   
   const handleDelete = async (itemId) => {
@@ -55,8 +52,6 @@ const Summary = () => {
       ],
     );
   };
-
- 
 
   const saveSummary = async (updatedSummary) => {
     try {
@@ -88,12 +83,10 @@ const Summary = () => {
 
   const totalBalance = totalIncome - totalExpense;
 
-  const sortedSummary = [...summary].sort((a, b) => b.id - a.id);
-
   return (
     <View style={styles.container}>
       <ScrollView>
-      {sortedSummary.map((item) => (
+        {summary.map((item) => (
           <TouchableOpacity
             key={item.id}
             style={styles.listItem}
